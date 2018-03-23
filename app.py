@@ -12,7 +12,7 @@ app = Flask(__name__)
 def main():
   return redirect('/index')
 
-def graph():
+def TICKER():
     r = requests.get('https://www.quandl.com/api/v3/datasets/WIKI/FB/data.json?api_key=M3p5d4UYShekAzwokawN')
     x = r.json()
     df = pd.DataFrame(x)
@@ -41,7 +41,15 @@ def graph():
 def index():
 	return render_template("index.html")
 
-
+# Graph page
+@app.route('/graph')
+def graph():
+	plot = TICKER()
+		
+	# Embed plot into HTML via Flask Render
+	script, div = components(plot)
+	return render_template("graph.html", script=script, div=div,
+		feature_names=feature_names,  current_feature_name=current_feature_name)
 
 
 if __name__ == '__main__':
