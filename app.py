@@ -5,12 +5,20 @@ import pandas as pd
 from bokeh.palettes import Spectral11
 from bokeh.embed import components
 from flask import Flask,render_template,request,redirect,session
-
-app = Flask(__name__)
 from bokeh.charts import Histogram
-from bokeh.embed import components
 
 app = Flask(__name__)
+
+app.vars={}
+
+
+@app.route('/')
+def main():
+  return redirect('/index')
+
+@app.route('/index', methods=['GET'])
+def index():
+    return render_template('index.html')
 
 # Load the  Data Set
 df = pd.DataFrame({'A':[3, 5, 7],'B':[1, 12, 25],'C':[5, 20, 30]})
