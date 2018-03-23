@@ -12,7 +12,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
-	return '<h1>Bokeh example</h1><a href=/plot>Go to plot page</a>'
+	return '<h1>Bokeh example</h1><a href=/graph>Go to plot page</a>'
 
 def make_my_plot():
     a = 10
@@ -40,12 +40,7 @@ def make_my_plot():
     # show the results
     return p
 
-@app.route('/plot/')
+@app.route('/graph')
 def hello():
-    plot = make_my_plot()
-    script, div = embed.components(plot)
-    return render_template(
-        'bokeh.html',
-        script=script,
-        div=div
-        )
+script, div = components(plot)
+return render_template('graph.html', script=script, div=div)
