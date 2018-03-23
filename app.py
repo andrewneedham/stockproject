@@ -41,7 +41,7 @@ def graph():
 def index():
 	plot = graph()
 	script, div = components(plot)
-	return render_template("index.html", script=script, div=div)
+	return render_template("index_graph.html", script=script, div=div)
 
 
 
