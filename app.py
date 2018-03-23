@@ -36,12 +36,10 @@ def graph():
     p.line(df6['Date'], df6['Close'], color='navy', alpha=0.5)
     return show(p)
 
-# Index page
+
 @app.route('/index', methods=['GET'])
 def index():
-	plot = graph()
-	script, div = components(plot)
-	return render_template("index_graph.html", script=script, div=div)
+	return render_template("index.html")
 
 
 
