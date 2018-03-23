@@ -1,24 +1,50 @@
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title>Stock Ticker</title>
-		<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>-->
-	</head>
-	<body>
-		<div class=page>
-  			<h1>User Input</h1>
-  			<div class=metanav>
+<html>
+<head>
+<link
+    href="http://cdn.pydata.org/bokeh/release/bokeh-0.12.5.min.css"
+    rel="stylesheet" type="text/css">
+<link
+    href="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.5.min.css"
+    rel="stylesheet" type="text/css">
 
-    			<h4>Please click for FB graph.</h4>
+<script src="http://cdn.pydata.org/bokeh/release/bokeh-0.12.5.min.js"></script>
+<script src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.5.min.js"></script>
 
-    			<form id='input' method='post' action='FBticker'>	
-	    			<input type="submit" value="Submit">
-	  			</p>
-				</form>
-  			</div>
-		</div>
-	</body>
+</head>
+<body>
+<H1>Test plot</H1>
+
+<form action="/">
+<select name="feature_name">
+	{% for feature in feature_names %}
+		{% if feature == current_feature_name %}
+			<option selected value="{{ feature }}">{{ feature }}</option> 
+		{% else %} 
+			<option value="{{ feature }}">{{ feature }}</option> 
+		{% endif %}
+	{% endfor %}
+</select>
+<input type="submit">
+</form>
+
+{{ script|safe }}
+{{ div|safe }}
+
+</body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

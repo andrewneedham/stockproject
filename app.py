@@ -8,19 +8,7 @@ from flask import Flask,render_template,request,redirect,session
 
 app = Flask(__name__)
 
-app.vars={}
-
-
-@app.route('/')
-def main():
-  return redirect('/index')
-
-@app.route('/index', methods=['GET'])
-def index():
-    return render_template('index.html')
-    
-@app.route('/graph', methods=['POST'])
-def FBticker():
+def ticker():
     r = requests.get('https://www.quandl.com/api/v3/datasets/WIKI/FB/data.json?api_key=M3p5d4UYShekAzwokawN')
     x = r.json()
     df = pd.DataFrame(x)
@@ -43,6 +31,21 @@ def FBticker():
     p = figure(plot_width=800, plot_height=250, x_axis_type="datetime")
     p.line(df6['Date'], df6['Close'], color='navy', alpha=0.5)
     return show(p)
+
+# Index page
+@app.route('/')
+def index():
+	# Create the plot
+	plot=bokeh.plotting.figure(plot_height=200)
+	bokeh.plotting.show(plot)
+		
+	# Embed plot into HTML via Flask Render
+	script, div = components(plot)
+	return render_template("ticker.html", script=script, div=div,
+		feature_names=feature_names,  current_feature_name=current_feature_name)
+
+
+
 
 if __name__ == '__main__':
     app.run(port=33507)
