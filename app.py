@@ -39,7 +39,10 @@ def TICKER():
 
 @app.route('/index', methods=['GET'])
 def index():
-	return render_template("index.html")
+    plot = TICKER()
+    script, div = components(plot)
+
+    return render_template('index.html', script=script, div=div)
 
 if __name__ == '__main__':
     app.run(port=33507)
