@@ -39,14 +39,7 @@ def ticker():
 # Index page
 @app.route('/index', methods=['GET'])
 def index():
-	# Create the plot
-	plot=bokeh.plotting.figure(plot_height=200)
-	bokeh.plotting.show(plot)
-		
-	# Embed plot into HTML via Flask Render
-	script, div = components(plot)
-	return render_template("ticker.html", script=script, div=div,
-		feature_names=feature_names,  current_feature_name=current_feature_name)
+	return render_template("index.html")
 
 
 
