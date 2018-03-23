@@ -1,31 +1,17 @@
-<html>
-<head>
-<link
-    href="http://cdn.pydata.org/bokeh/release/bokeh-0.12.5.min.css"
-    rel="stylesheet" type="text/css">
-<link
-    href="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.5.min.css"
-    rel="stylesheet" type="text/css">
-
-<script src="http://cdn.pydata.org/bokeh/release/bokeh-0.12.5.min.js"></script>
-<script src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.5.min.js"></script>
-
-</head>
-<body>
-<H1>Test plot</H1>
-  <form id='input' method='post' action='graph'>
-  <input type="submit" value="Click for FB closing price"></form>
-
-{{ script|safe }}
-{{ div|safe }}
-
-</body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>Embed Demo</title>
+    {{ js_resources|indent(4)|safe }}
+    {{ css_resources|indent(4)|safe }}
+    {{ plot_script|indent(4)|safe }}
+  </head>
+  <body>
+    {{ plot_div|indent(4)|safe }}
+  </body>
 </html>
-
-
-
-
-
 
 
 
