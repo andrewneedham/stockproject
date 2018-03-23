@@ -1,47 +1,53 @@
-from flask import Flask, render_template
-
-from bokeh.embed import components
+import requests
+import pandas
+import simplejson as json
 from bokeh.plotting import figure
-from bokeh.resources import INLINE
-from bokeh.util.string import encode_utf8
-
+from bokeh.palettes import Spectral11
+from bokeh.embed import components 
+from flask import Flask,render_template,request,redirect,session
 
 app = Flask(__name__)
+
+app.vars={}
+
 
 @app.route('/')
 def main():
   return redirect('/index')
 
+@app.route('/index', methods=['GET'])
+def index():
+    return render_template('index.html')
+    
+@app.route('/graph', methods=['POST'])
+def graph():
+#    if request.method == 'POST':
+        app.vars['ticker'] = request.form['ticker']
+        
+        api_url = 'https://www.quandl.com/api/v3/datasets/WIKI/%s.json?api_key=M3p5d4UYShekAzwokawN' % app.vars['ticker']
+        session = requests.Session()
+        session.mount('http://', requests.adapters.HTTPAdapter(max_retries=3))
+        raw_data = session.get(api_url)
 
-@app.route('/bokeh')
-def bokeh():
+        a = raw_data.json()
+        df = pandas.DataFrame(a['data'], columns=a['column_names'])
 
-    # init a basic bar chart:
-    # http://bokeh.pydata.org/en/latest/docs/user_guide/plotting.html#bars
-    fig = figure(plot_width=600, plot_height=600)
-    fig.vbar(
-        x=[1, 2, 3, 4],
-        width=0.5,
-        bottom=0,
-        top=[1.7, 2.2, 4.6, 3.9],
-        color='navy'
-    )
+        df['Date'] = pandas.to_datetime(df['Date'])
 
-    # grab the static resources
-    js_resources = INLINE.render_js()
-    css_resources = INLINE.render_css()
-
-    # render template
-    script, div = components(fig)
-    html = render_template(
-        'index.html',
-        plot_script=script,
-        plot_div=div,
-        js_resources=js_resources,
-        css_resources=css_resources,
-    )
-    return encode_utf8(html)
-
+        p = figure(title='Stock prices for %s' % app.vars['ticker'],
+            x_axis_label='date',
+            x_axis_type='datetime')
+        
+        if request.form.get('Close'):
+            p.line(x=df['Date'].values, y=df['Close'].values,line_width=2, legend='Close')
+        if request.form.get('Adj. Close'):
+            p.line(x=df['Date'].values, y=df['Adj. Close'].values,line_width=2, line_color="green", legend='Adj. Close')
+        if request.form.get('Open'):
+            p.line(x=df['Date'].values, y=df['Open'].values,line_width=2, line_color="red", legend='Open')
+        if request.form.get('Adj. Open'):
+            p.line(x=df['Date'].values, y=df['Adj. Open'].values,line_width=2, line_color="purple", legend='Adj. Open')
+        script, div = components(p)
+        return render_template('graph.html', script=script, div=div)
 
 if __name__ == '__main__':
     app.run(port=33507)
