@@ -39,7 +39,9 @@ def graph():
 # Index page
 @app.route('/index', methods=['GET'])
 def index():
-	return render_template("index.html")
+	plot = graph()
+	script, div = components(plot)
+	return render_template("index.html", script=script, div=div)
 
 
 
