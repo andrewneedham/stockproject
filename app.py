@@ -8,6 +8,10 @@ from flask import Flask,render_template,request,redirect,session
 
 app = Flask(__name__)
 
+@app.route('/')
+def main():
+  return redirect('/index')
+
 def ticker():
     r = requests.get('https://www.quandl.com/api/v3/datasets/WIKI/FB/data.json?api_key=M3p5d4UYShekAzwokawN')
     x = r.json()
@@ -33,7 +37,7 @@ def ticker():
     return show(p)
 
 # Index page
-@app.route('/')
+@app.route('/index', methods=['GET'])
 def index():
 	# Create the plot
 	plot=bokeh.plotting.figure(plot_height=200)
