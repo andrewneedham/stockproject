@@ -20,7 +20,7 @@ def main():
   return redirect('/index')
 
 
-@app.route("/")
+@app.route("/index")
 def visualisation():
  # Build the dataframe
  df = pd.DataFrame({
