@@ -12,7 +12,7 @@ app = Flask(__name__)
 def main():
   return redirect('/index')
 
-def ticker():
+def FBticker():
     r = requests.get('https://www.quandl.com/api/v3/datasets/WIKI/FB/data.json?api_key=M3p5d4UYShekAzwokawN')
     x = r.json()
     df = pd.DataFrame(x)
