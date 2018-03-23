@@ -1,22 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>Bokeh Plot</title>
-        
-        <link rel="stylesheet" href="http://cdn.pydata.org/bokeh/release/bokeh-0.9.1.min.css" type="text/css" />
-        <script type="text/javascript" src="http://cdn.pydata.org/bokeh/release/bokeh-0.9.1.min.js"></script>
-  </head>
-  <body>
-      {{ div | safe }}
-      {{ script | safe }}
+<html>
+<head>
+<link
+    href="http://cdn.pydata.org/bokeh/release/bokeh-0.12.5.min.css"
+    rel="stylesheet" type="text/css">
+<link
+    href="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.5.min.css"
+    rel="stylesheet" type="text/css">
 
-      <br>
-      Change color of line to:<br>
-      <ul>
-	      <li><a href=/plot/green>green</a>
-	      <li><a href=/plot/red>red</a>
-	      <li><a href=/plot/blue>blue</a>
-	</ul>
-  </body>
+<script src="http://cdn.pydata.org/bokeh/release/bokeh-0.12.5.min.js"></script>
+<script src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.5.min.js"></script>
+
+</head>
+<body>
+<H1>Test histogram</H1>
+
+{{ script|safe }}
+{{ div|safe }}
+
+</body>
 </html>

@@ -1,18 +1,26 @@
-from flask import Flask, render_template
 from bokeh.plotting import figure, output_notebook, show
 from bokeh import embed
 import requests
 import pandas
-from bokeh.plotting import figure
 from bokeh.palettes import Spectral11
 from bokeh.embed import components
 from flask import Flask,render_template,request,redirect,session
 
 app = Flask(__name__)
 
+
+app.vars={}
+
+
 @app.route('/')
-def hello_world():
-	return '<h1>Bokeh example</h1><a href=/graph>Go to plot page</a>'
+def main():
+  return redirect('/index')
+
+@app.route('/index', methods=['GET'])
+def index():
+	plot = make_my_plot()
+	script, div = components(plot)
+    	return render_template('index.html', script=script, div=div)
 
 def make_my_plot():
     a = 10
@@ -39,11 +47,6 @@ def make_my_plot():
 
     # show the results
     return p
-
-@app.route('/graph')
-def hello():
-script, div = components(plot)
-return render_template('graph.html', script=script, div=div)
 
 
 if __name__ == '__main__':
