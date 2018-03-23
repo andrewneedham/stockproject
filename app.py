@@ -1,48 +1,47 @@
-import requests
-import pandas
-import simplejson as json
-from bokeh.plotting import figure
-from bokeh.palettes import Spectral11
-from bokeh.embed import components 
-from flask import Flask,render_template,request,redirect,session
-
+from flask import Flask, render_template
+from bokeh.plotting import figure, output_notebook, show
+from bokeh import embed
 app = Flask(__name__)
 
 @app.route('/')
-def main():
-  return redirect('/index')
+def hello_world():
+	return '<h1>Bokeh example</h1><a href=/plot>Go to plot page</a>'
 
-def TICKER():
-    r = requests.get('https://www.quandl.com/api/v3/datasets/WIKI/FB/data.json?api_key=M3p5d4UYShekAzwokawN')
-    x = r.json()
-    df = pd.DataFrame(x)
-    s=df.iloc[3:4, 0:1]
-    newdf=df.iloc[3:4, 0:1]
-    df2 = newdf['dataset_data'].apply(pd.Series)
-    df3 = df2.T
-    df4=df3
-    df4['data']= df4['data'].astype(str)
-    df4.columns = ['all']
-    df5 = df4['all'].str.split(',\s+', expand=True)
-    column_namesdf=df.iloc[2:3, 0:1]
-    column_names = column_namesdf['dataset_data'].values.tolist()
-    df5.columns = (column_names)
-    df6=df5
-    df6['Date'] = df6['Date'].str.replace(r"[\',\[']", '')
-    df6['Adj. Volume'] = df6['Adj. Volume'].str.replace(r"[\',\]']", '')
-    df6['Date'] = pd.to_datetime(df6['Date'])
-    output_file("datetime.html")
-    p = figure(plot_width=800, plot_height=250, x_axis_type="datetime")
-    p.line(df6['Date'], df6['Close'], color='navy', alpha=0.5)
-    return show(p)
+def make_my_plot(col):
+    # this col_from_web has been added to the example and should be updated by the col attribute coming in through /plot/<col>
+    col_from_web ="green"
+    a = 10
+    # prepare some data
+    x = [0.1, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0]
+    y0 = [i**2 for i in x]
+    y1 = [a**i for i in x]
+    y2 = [a**(i**2) for i in x]
 
+    # create a new plot
+    p = figure(
+       tools="",
+       y_axis_type="log", y_range=[0.001, 10**11], title="log axis example",
+       x_axis_label='sections', y_axis_label='particles'
+    )
 
-@app.route('/index', methods=['GET'])
-def index():
-    plot = TICKER()
-    script, div = components(plot)
+    # add some renderers
+    p.line(x, x, legend="y=x")
+    p.circle(x, x, legend="y=x", fill_color="white", size=8)
+    p.line(x, y0, legend="y=x^2", line_width=3)
+    p.line(x, y1, legend="y=10^x", line_color=col)
+    p.circle(x, y1, legend="y=10^x", fill_color=col, line_color=col, size=6)
+    p.line(x, y2, legend="y=10^x^2", line_color="orange", line_dash="4 4")
 
-    return render_template('index.html', script=script, div=div)
+    # show the results
+    return p
 
-if __name__ == '__main__':
-    app.run(port=33507)
+@app.route('/plot/')
+@app.route('/plot/<color>')
+def hello(color='red'):
+    plot = make_my_plot(color)
+    script, div = embed.components(plot)
+    return render_template(
+        'index.html',
+        script=script,
+        div=div
+        )
