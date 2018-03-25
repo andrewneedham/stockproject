@@ -1,5 +1,6 @@
 import requests
 import pandas
+import simplejson as json
 from bokeh.plotting import figure
 from bokeh.palettes import Spectral11
 from bokeh.embed import components 
@@ -23,7 +24,7 @@ def graph():
 #    if request.method == 'POST':
         app.vars['ticker'] = request.form['ticker']
         
-        api_url = 'https://www.quandl.com/api/v3/datasets/WIKI/%s.json?api_key=M3p5d4UYShekAzwokawN' % app.vars['ticker']
+        api_url = 'https://www.quandl.com/api/v1/datasets/WIKI/%s.json?api_key=M3p5d4UYShekAzwokawN' % app.vars['ticker']
         session = requests.Session()
         session.mount('http://', requests.adapters.HTTPAdapter(max_retries=3))
         raw_data = session.get(api_url)
